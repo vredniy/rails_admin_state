@@ -24,15 +24,15 @@ module RailsAdmin
               events = bindings[:object].class.state_machines[name.to_sym].events
               bindings[:object].send("#{name}_events".to_sym).each do |event|
                 next if @state_machine_options.disabled?(event)
-                unless bindings[:controller].try(:authorization_adapter).nil? 
+                unless bindings[:controller].try(:authorization_adapter).nil?
                   adapter = bindings[:controller].authorization_adapter
-                  next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
+                  next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(event, @abstract_model, bindings[:object])))
                 end
                 event_class = @state_machine_options.event(event)
                 ret << bindings[:view].link_to(
                   events[event].human_name,
                   state_path(model_name: @abstract_model, id: bindings[:object].id, event: event, attr: name),
-                  method: :post, 
+                  method: :post,
                   class: "btn btn-mini btn-xs #{event_class}",
                   style: 'margin-bottom: 5px;'
                 )
@@ -63,7 +63,7 @@ module RailsAdmin
               events = bindings[:object].class.state_machines[name.to_sym].events
               bindings[:object].send("#{name}_events".to_sym).each do |event|
                 next if @state_machine_options.disabled?(event)
-                unless bindings[:controller].try(:authorization_adapter).nil? 
+                unless bindings[:controller].try(:authorization_adapter).nil?
                   adapter = bindings[:controller].authorization_adapter
                   next unless (adapter.authorized?(:state, @abstract_model, bindings[:object]) && (adapter.authorized?(:all_events, @abstract_model, bindings[:object]) || adapter.authorized?(event, @abstract_model, bindings[:object])))
                 end
@@ -91,7 +91,7 @@ module RailsAdmin
             end
             ('<div style="white-space: normal;">' + ret.join(' ') + '</div>').html_safe
           end
-          
+
           register_instance_option :export_value do
             state = bindings[:object].send(name)
             bindings[:object].class.state_machines[name.to_sym].states[state.to_sym].human_name
